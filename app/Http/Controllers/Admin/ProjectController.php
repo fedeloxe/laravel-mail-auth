@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use App\Models\Type;
 use App\Models\Technology;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewMail;
+use App\Models\Lead;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -56,6 +61,13 @@ class ProjectController extends Controller
         if ($request->has('technologies')) {
             $project->technologies()->attach($request->technologies);
         }
+        $new_lead = new Lead();
+        $new_lead->title = $new['title'];
+        $new_lead->content = $new['content'];
+        $new_lead->slug = $new['slug'];
+        $new_lead->save();
+
+        Mail::to('info@boolpress.com')->send(new NewMail($new_lead));
 
         return redirect()->route('admin.projects.index');
     }
