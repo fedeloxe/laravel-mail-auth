@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 @section('content')
+<div class="my-3">
+
+  <img src="{{asset('storage/' .$project->cover_image)}}" alt="{{$project->title}}" class="w-50">
+</div>
 <table class="table table-striped">
     <thead>
       <tr>

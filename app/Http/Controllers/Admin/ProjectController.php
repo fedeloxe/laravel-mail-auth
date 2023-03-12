@@ -101,6 +101,15 @@ class ProjectController extends Controller
             $project->technologies()->sync($request->technologies);
         else
             $project->technologies()->detach();
+        if ($request->has('cover_image')) {
+
+            if ($project->cover_image) {
+                Storage::delete($project->cover_image);
+            }
+            $path = Storage::disk('public')->put('project_images', $request->cover_image);
+
+            $form_data['cover_image'] = $path;
+        }
         $project->update($data);
         return redirect()->route('admin.projects.index');
     }
