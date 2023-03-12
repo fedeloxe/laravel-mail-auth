@@ -48,7 +48,7 @@ class ProjectController extends Controller
         if ($request->hasFile('cover_image')) {
             $path = Storage::disk('public')->put('project_images', $request->cover_image);
 
-            $form_data['cover_image'] = $path;
+            $new['cover_image'] = $path;
         }
         $slug = Project::generateSlug($request->title);
         $new['slug'] = $slug;
